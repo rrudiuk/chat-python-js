@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	Channels
+{% endblock %}
+
+{% block body %}
+
+	<h1> Welcome onboard {{ username }}! </h1>
+
+	{% if channels_count > 0 %}
+		<ul>
+			{% for channel in channels_list %}
+				<li><a href="{{ url_for('channel', channel_name=channel) }}">{{ channel }}</a></li>
+			{% endfor %}
+		</ul>
+	{% elif channels_count == 0 %}
+		Thers is currently no active channels.
+	{% endif %}
+
+	<h4>Create channel: </h4>
+
+	{{ message }}
+
+	<form action="/channel_created" method="post">
+		<div class="form-group">
+            <div class="control">
+                <input class="form-control" type="text" name="channel_name" placeholder="Channel name" autofocus="">
+            </div>
+        </div>
+
+        <input class="btn btn-primary" type="submit" name="submit_name" value="Start chatting!">
+	</form>
+
+{% endblock %}
