@@ -1,13 +1,19 @@
 import os
 import requests
 
-from flask import Flask, render_template, request
+from flask import Flask, session, render_template, request
+from flask_session import Session
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config['SESSION_COOKIE_SECURE'] = False
 socketio = SocketIO(app)
+
+# Configure session to use filesystem
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # Global variable to store username
 username = ""

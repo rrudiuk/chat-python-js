@@ -6,7 +6,7 @@
 
 {% block body %}
 
-	<h1> Welcome onboard {{ username }}! </h1>
+	<h1> Welcome onboard <span id="username">{{ username }}</span>!</h1>
 
 	{% if channels_count > 0 %}
 		<h4>These are the available channels:</h4>

@@ -6,19 +6,41 @@
 
 {% block body %}
 
-	<h1>Welcome to the Custom Chat</h1>
+	<div id="new_user">
+		<h1>Welcome to the Custom Chat</h1>
 
-	<p>Please select a username to access: </p>
+		<p>Please select a username to access: </p>
 
-	{{ message }}
+		{{ message }}
 
-	<form action="/channels" method="post">
+		<form id="username-form">
+			<div class="form-group">
+            	<div class="control">
+                	<input class="form-control message username" type="text" name="username" placeholder="Username" autofocus="">
+            	</div>
+        	</div>
+
+        	<input class="btn btn-primary login-btn" type="submit" name="submit_name" value="Start chatting!">
+		</form>
+	</div>
+
+	<div id="old_user">
+		<h1></h1>
+
+		<h4>These are the available channels:</h4>
+		<ul id="exisiting-channels">
+		</ul>
+
+		<h4>Create channel: </h4>
+
+		{{ message }}
+
 		<div class="form-group">
             <div class="control">
-                <input class="form-control message" type="text" name="username" placeholder="Username" autofocus="">
+                <input class="form-control new-channel" type="text" name="channel_name" placeholder="Channel name" autofocus="">
             </div>
         </div>
 
-        <input class="btn btn-primary" type="submit" name="submit_name" value="Start chatting!">
-	</form>
+        <input class="btn btn-primary create-chat" type="submit" name="submit_name" value="Start chatting!">
+	</div>
 {% endblock %}
