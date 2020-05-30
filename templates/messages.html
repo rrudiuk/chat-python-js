@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{ channel_name }}
+{% endblock %}
+
+{% block body %}
+	<h1>Welcome to {{ channel_name }}</h1>
+
+	<div class="container">
+
+  		<ul id="messages_list"></ul>
+
+	</div>
+
+	<div class="form-group">
+	  	<textarea class="form-control message" aria-label="With textarea"></textarea>
+	</div>
+
+	<button class="send_message" data-vote="yes">Send</button>
+
+{% endblock %}

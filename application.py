@@ -1,10 +1,12 @@
 import os
+import requests
 
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+app.config['SESSION_COOKIE_SECURE'] = False
 socketio = SocketIO(app)
 
 # Global variable to store username
@@ -37,11 +39,6 @@ def channels():
 	return render_template("channels.html", username=username,
 		channels_count=channels_count, channels_list=channels_list)
 
-@app.route("/channel/<channel_name>", methods=["GET"])
-def channel(channel_name):
-
-	return "This is {}".format(channel_name)
-
 @app.route("/channel_created", methods=["POST"])
 def channel_created():
 
@@ -56,3 +53,20 @@ def channel_created():
 
 	return render_template("channels.html", username=username,
 		channels_count=channels_count, channels_list=channels_list) 
+
+@app.route("/channel/<channel_name>", methods=["GET"])
+def channel(channel_name):
+
+	return render_template("messages.html", channel_name=channel_name)
+
+@socketio.on("submit message")
+def submit_message(data):
+    message_text = data["message_text"]
+    emit("announce message", {"message_text": message_text}, broadcast=True)
+
+@socketio.on("submit vote")
+def vote(data):
+    selection = data["selection"]
+    emit("announce vote", {"selection": selection}, broadcast=True)
+
+app.run()
