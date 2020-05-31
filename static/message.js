@@ -12,8 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector('.send-message').onclick = () => {
 
-            const message_text = document.querySelector('#message').value;
-            socket.emit('submit message', {'message_text': message_text});
+            const message = document.querySelector('#message').value;
+            const channel_name = document.querySelector('#channel_name').innerHTML;
+
+            let message_text = `${myStorage.getItem('messenger_username')}: ${message}`
+
+            socket.emit('submit message', {'message_text': message_text, 'channel_name': channel_name});
         };
 
         // Execute a function when the user releases a key on the keyboard
@@ -21,9 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Number 13 is the "Enter" key on the keyboard
             if (event.keyCode === 13) {
                 const message = document.querySelector('#message').value;
+                const channel_name = document.querySelector('#channel_name').innerHTML;
                 if (message != "") {
                     let message_text = `${myStorage.getItem('messenger_username')}: ${message}`
-                    socket.emit('submit message', {'message_text': message_text});
+                    socket.emit('submit message', {'message_text': message_text, 'channel_name': channel_name});
                 }
             }
         });

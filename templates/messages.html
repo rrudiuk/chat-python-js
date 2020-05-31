@@ -7,11 +7,15 @@
 {% block body %}
 
 	<a href="{{ url_for('index') }}">Go back</a>
-	<h1>Welcome to {{ channel_name }}</h1>
+	<h1>This is: "<span id="channel_name">{{ channel_name }}</span>"</h1>
 
 	<div class="container">
 
-  		<ul id="messages_list"></ul>
+  		<ul id="messages_list">
+  			{% for message in messages %}
+  				<li>{{ message }}</li>
+  			{% endfor %}
+  		</ul>
 
 	</div>
 
