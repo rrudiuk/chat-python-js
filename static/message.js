@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener("keyup", function(event) {
             // Number 13 is the "Enter" key on the keyboard
             if (event.keyCode === 13) {
-                const message_text = document.querySelector('#message').value;
-                if (message_text != "") {
+                const message = document.querySelector('#message').value;
+                if (message != "") {
+                    let message_text = `${myStorage.getItem('messenger_username')}: ${message}`
                     socket.emit('submit message', {'message_text': message_text});
                 }
             }
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // When a new message is announced, add to the unordered list
     socket.on('announce message', data => {
         const li = document.createElement('li');
-        li.innerHTML = `${myStorage.getItem('messenger_username')}: ${data.message_text}`;
+        li.innerHTML = `${data.message_text}`;
         document.querySelector('#messages_list').append(li);
         document.querySelector('#message').value = "";
     });

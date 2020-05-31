@@ -1,7 +1,7 @@
 import os
 import requests
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from flask_socketio import SocketIO, emit
 
@@ -17,30 +17,50 @@ Session(app)
 
 # Global variable to store username
 username = ""
-channels_count = 1
-channels_list = ["Example"]
+channels_count = 2
+channels_list = ["Example", "Another example"]
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", channels_count=channels_count, 
+    	channels_list=channels_list)
 
-@app.route("/channels", methods=["GET"])
-def channels_logged():
-	if username != "":
-		return  render_template("channels.html", channels_count=channels_count,
-		username=username, channels_list=channels_list)
+@app.route("/", methods=["POST"])
+def new_channel():
 
-	return render_template("index.html")
+	channel_name = request.form.get("channel_name")
+
+	if channel_name == "":
+		return render_template("index.html", message="Please enter a valid name", 
+			channels_count=channels_count, channels_list=channels_list)
+
+	name_taken = False
+
+	if channel_name in channels_list:
+		name_taken = True
+
+	if not name_taken:
+		channels_list.append(channel_name)
+		channels_count += channels_count
+
+	return render_template("index.html", channels_count=channels_count, 
+		channels_list=channels_list)
 
 @app.route("/channel", methods=["POST"])
-def channel():
+def channel_ch():
 
-	channel_name = request.form.get("channel")
+	channel_name = request.form.get("channel_name")
+
+	if channel_name == "":
+		return render_template("index.html", message="Please enter a valid name", 
+			channels_count=channels_count, channels_list=channels_list, channel_name=channel_name)
+
+	channels_list.append(channel_name)
 
 	return render_template("messages.html", channel_name=channel_name)
 
 @app.route("/channel/<channel_name>", methods=["GET"])
-def channel_messages(channel_name):
+def channel(channel_name):
 
 	return render_template("messages.html", channel_name=channel_name)
 

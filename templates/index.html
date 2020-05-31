@@ -27,23 +27,30 @@
 	<div id="old_user">
 		<h1></h1>
 
-		<h4>These are the available channels:</h4>
-
-		<form id="av-ch" method="POST" action="/channel">
-			<div id="radio"></div>
-		</form>
+		{% if channels_count > 0 %}
+			<h4>These are the available channels:</h4>
+			<ul>
+				{% for channel in channels_list %}
+					<li><a href="{{ url_for('channel', channel_name=channel) }}">{{ channel }}</a></li>
+					<!-- <li>{{ channel }}</li> -->
+				{% endfor %}
+			</ul>
+		{% elif channels_count == 0 %}
+			Thers is currently no active channels.
+		{% endif %}
 
 		<h4>Create channel: </h4>
 
 		{{ message }}
 
-		<div class="form-group">
-            <div class="control">
-                <input class="form-control new-channel" type="text" name="channel_name" placeholder="Channel name" autofocus="False">
-            </div>
-        </div>
+		<form action="/channel" method="post">
+			<div class="form-group">
+            	<div class="control">
+                	<input class="form-control" type="text" name="channel_name" placeholder="Channel name" autofocus="">
+            	</div>
+        	</div>
 
-        <input class="btn btn-primary create-chat" type="submit" name="submit_name" value="Create!">
-	</div>
+        	<input class="btn btn-primary" type="submit" name="submit_name" value="Start chatting!">
+		</form>
 
 {% endblock %}
