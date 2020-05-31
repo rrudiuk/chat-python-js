@@ -28,8 +28,10 @@
 		<h1></h1>
 
 		<h4>These are the available channels:</h4>
-		<ul id="exisiting-channels">
-		</ul>
+
+		<form id="av-ch" method="POST" action="/channel">
+			<div id="radio"></div>
+		</form>
 
 		<h4>Create channel: </h4>
 
@@ -37,10 +39,11 @@
 
 		<div class="form-group">
             <div class="control">
-                <input class="form-control new-channel" type="text" name="channel_name" placeholder="Channel name" autofocus="">
+                <input class="form-control new-channel" type="text" name="channel_name" placeholder="Channel name" autofocus="False">
             </div>
         </div>
 
-        <input class="btn btn-primary create-chat" type="submit" name="submit_name" value="Start chatting!">
+        <input class="btn btn-primary create-chat" type="submit" name="submit_name" value="Create!">
 	</div>
+
 {% endblock %}

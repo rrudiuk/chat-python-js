@@ -32,36 +32,15 @@ def channels_logged():
 
 	return render_template("index.html")
 
-@app.route("/channels", methods=["POST"])
-def channels():
+@app.route("/channel", methods=["POST"])
+def channel():
 
-	username = request.form.get("username")
+	channel_name = request.form.get("channel")
 
-	if username == "":
-		return render_template("index.html", message="Please select a username")
-	elif len(username) > 64:
-		return render_template("index.html", message="Please select a shorter username")
-
-	return render_template("channels.html", username=username,
-		channels_count=channels_count, channels_list=channels_list)
-
-@app.route("/channel_created", methods=["POST"])
-def channel_created():
-
-	channel_name = request.form.get("channel_name")
-
-	if channel_name == "":
-		return render_template("channels.html", username=username,
-		channels_count=channels_count, channels_list=channels_list,
-		massage="Please add a valid name")
-
-	channels_list.append(channel_name)
-
-	return render_template("channels.html", username=username,
-		channels_count=channels_count, channels_list=channels_list) 
+	return render_template("messages.html", channel_name=channel_name)
 
 @app.route("/channel/<channel_name>", methods=["GET"])
-def channel(channel_name):
+def channel_messages(channel_name):
 
 	return render_template("messages.html", channel_name=channel_name)
 
