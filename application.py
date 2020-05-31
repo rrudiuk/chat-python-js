@@ -17,52 +17,38 @@ Session(app)
 
 # Global variable to store username
 username = ""
-channels_count = 2
-channels_list = ["Example", "Another example"]
+channels_list = []
+channels_number = len(channels_list)
 
 @app.route("/")
 def index():
-    return render_template("index.html", channels_count=channels_count, 
-    	channels_list=channels_list)
+    channels_number = len(channels_list)
+    return render_template("index.html", channels_count=channels_number, 
+        channels_list=channels_list)
 
 @app.route("/", methods=["POST"])
 def new_channel():
 
-	channel_name = request.form.get("channel_name")
+    channel_name = request.form.get("channel_name")
+    channels_number = len(channels_list)
 
-	if channel_name == "":
-		return render_template("index.html", message="Please enter a valid name", 
-			channels_count=channels_count, channels_list=channels_list)
+    if channel_name == "":
+        return render_template("index.html", message="Please enter a valid name", 
+            channels_count=channels_number, channels_list=channels_list)
 
-	name_taken = False
+    if channel_name in channels_list:
+        return render_template("index.html", message="Please enter a unique name", 
+            channels_count=channels_number, channels_list=channels_list, channel_name=channel_name)
 
-	if channel_name in channels_list:
-		name_taken = True
+    channels_list.append(channel_name)
 
-	if not name_taken:
-		channels_list.append(channel_name)
-		channels_count += channels_count
-
-	return render_template("index.html", channels_count=channels_count, 
-		channels_list=channels_list)
-
-@app.route("/channel", methods=["POST"])
-def channel_ch():
-
-	channel_name = request.form.get("channel_name")
-
-	if channel_name == "":
-		return render_template("index.html", message="Please enter a valid name", 
-			channels_count=channels_count, channels_list=channels_list, channel_name=channel_name)
-
-	channels_list.append(channel_name)
-
-	return render_template("messages.html", channel_name=channel_name)
+    return render_template("index.html", channels_count=channels_number, 
+        channels_list=channels_list)
 
 @app.route("/channel/<channel_name>", methods=["GET"])
 def channel(channel_name):
 
-	return render_template("messages.html", channel_name=channel_name)
+    return render_template("messages.html", channel_name=channel_name)
 
 @socketio.on("submit message")
 def submit_message(data):
