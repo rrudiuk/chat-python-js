@@ -49,9 +49,4 @@ def submit_message(data):
     message_text = data["message_text"]
     emit("announce message", {"message_text": message_text}, broadcast=True)
 
-@socketio.on("submit vote")
-def vote(data):
-    selection = data["selection"]
-    emit("announce vote", {"selection": selection}, broadcast=True)
-
 app.run()
